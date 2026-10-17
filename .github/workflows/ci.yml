@@ -5,6 +5,11 @@ on:
   push:
     branches: [ "main" ]
 
+# Required for OIDC authentication with AWS
+permissions:
+  id-token: write   # lets the job request a GitHub OIDC token
+  contents: read    # needed by actions/checkout
+
 # 2. The Jobs: What server do we need?
 jobs:
   build-and-test:
@@ -47,6 +52,8 @@ jobs:
       run: aws eks update-kubeconfig --name workshop-cluster --region us-east-1
 
     - name: Deploy to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
         # Replace the placeholder in the yaml with the real image URI
         sed -i "s|ECR_REGISTRY/fastapi-workshop:IMAGE_TAG|$ECR_REGISTRY/fastapi-workshop:${{ github.sha }}|g" deployment.yaml
