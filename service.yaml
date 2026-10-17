@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service
+  # Must match the namespace used in deployment.yaml
+  namespace: student-1 
+spec:
+  type: LoadBalancer
+  selector:
+    # This tells the Service which Pods to send traffic to
+    app: fastapi
+  ports:
+    - protocol: TCP
+      port: 80         # The port the internet will hit (standard HTTP)
+      targetPort: 8000 # The port the FastAPI container is listening on

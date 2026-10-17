@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-deployment
+  # Ensure you change this namespace to your own username if using a shared cluster!
+  namespace: student-1 
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastapi
+  template:
+    metadata:
+      labels:
+        app: fastapi
+    spec:
+      containers:
+      - name: fastapi-container
+        # Leave this exact placeholder string alone! GitHub Actions replaces it automatically.
+        image: ECR_REGISTRY/fastapi-workshop:IMAGE_TAG
+        ports:
+        - containerPort: 8000
