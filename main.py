@@ -39,6 +39,7 @@ def create_book(book: Book):
     FAKE_DB[new_id] = book_dict
     return book_dict
 
+
 @app.delete("/books/{book_id}")
 def delete_book(book_id: int):
     if book_id not in FAKE_DB:
